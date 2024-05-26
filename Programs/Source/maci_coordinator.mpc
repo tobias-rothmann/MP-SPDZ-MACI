@@ -29,7 +29,7 @@ def add(x1,y1,x2,y2):
 # Tests on add #
 ################ 
 
-# Addition tests from https://eips.ethereum.org/EIPS/eip-2494#arithmetic
+# Addition tests from https://eips.ethereum.org/EIPS/eip-2494 (BabyJubJub EIP)
 
 # normal random addition
 #x1 = cint(17777552123799933955779906779655732241715742912184938656739573121738514868268)
@@ -53,3 +53,40 @@ def add(x1,y1,x2,y2):
 #id0 = cint(0)
 #id1 = cint(1)
 #print_ln('id : %s', add(id0,id1,id0,id1))
+
+#############################
+# Poseidon Decrypt Function #
+#############################
+
+# Poseidon permutation function
+def poseidonPerm(input):
+    return Array(cint, 0)
+
+two128 = 340282366920938463463374607431768211456
+
+# inputs: encryption key = (e1,e2),
+def poseidon_decrypt(ciphertext: Array, e1,e2, nonce: cint, lenght):
+    state = Array(3, cint)
+    state[0] = 0
+    state[1] = e1
+    state[2] = e2
+    state[3] = nonce + length * two128
+
+    n = len(ciphertext)
+    message = Array(3*n, cint)
+
+    for i in range(n): 
+        state = poseidonPerm(state)
+
+        message[i*3] = ciphertext[i*3] - state[1]
+        message[i*3+1] = ciphertext[i*3+1] - state[2]
+        message[i*3+2] = ciphertext[i*3+2] - state[3]
+
+        state[1] = ciphertext[i * 3]
+        state[2] = ciphertext[i * 3 + 1]
+        state[3] = ciphertext[i * 3 + 2]
+
+    return message
+    
+
+    
