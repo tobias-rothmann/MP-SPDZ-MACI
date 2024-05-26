@@ -392,7 +392,7 @@ def poseidonPerm(inputs):
 two128 = 340282366920938463463374607431768211456
 
 # inputs: encryption key = (e1,e2), length = length of plaintext
-def poseidon_decrypt(ciphertext: Array, e1,e2, nonce: cint, length):
+def poseidon_decrypt(ciphertext: Array, e1: sint,e2:sint, nonce: cint, length):
     state = Array(4, cint)
     state[0] = 0
     state[1] = e1
@@ -415,8 +415,10 @@ def poseidon_decrypt(ciphertext: Array, e1,e2, nonce: cint, length):
 
     return message
 
-def collect_votes(n):
+def collect_votes(n):   
     votes = Array(cint, n)
+    for i in range(n):
+        votes[i] = 0
 
     for i in range(n):
         ciphertext = sint.get_input_from(i)
@@ -424,7 +426,9 @@ def collect_votes(n):
         e2 = sint.get_input_from(i)
         nonce = sint.get_input_from(i)
         length = sint.get_input_from(i)
-        votes[i] = poseidon_decrypt(ciphertext,e1,e2,nonce,length)
+        vote_i = poseidon_decrypt(ciphertext,e1,e2,nonce,length)[0]
+        votes[vote_i] = votes[vote_i] + 1
 
     votes
+
 
