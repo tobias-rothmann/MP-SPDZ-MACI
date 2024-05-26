@@ -31,7 +31,7 @@ def add(x1,y1,x2,y2):
 
 # Addition tests from https://eips.ethereum.org/EIPS/eip-2494 (BabyJubJub EIP)
 
-# normal random addition
+# normal random addition test
 #x1 = cint(17777552123799933955779906779655732241715742912184938656739573121738514868268)
 #y1 = cint(2626589144620713026669568689430873010625803728049924121243784502389097019475)
 #x2 = cint(16540640123574156134436876038791482806971768689494387082833631921987005038935)
@@ -41,7 +41,7 @@ def add(x1,y1,x2,y2):
 #print_ln('res : %s', add(x1,y1,x2,y2))
 #print_ln('comp: %s', (x3,y3))
 
-#double
+#double test
 #x1 = cint(17777552123799933955779906779655732241715742912184938656739573121738514868268)
 #y1 = cint(2626589144620713026669568689430873010625803728049924121243784502389097019475)
 #x2 = cint(6890855772600357754907169075114257697580319025794532037257385534741338397365)
@@ -49,16 +49,16 @@ def add(x1,y1,x2,y2):
 #print_ln('res : %s', add(x1,y1,x1,y1))
 #print_ln('comp: %s', (x2,y2))
 
-# id + id = id
+# id + id = id test
 #id0 = cint(0)
 #id1 = cint(1)
 #print_ln('id : %s', add(id0,id1,id0,id1))
 
 
 
-##############
-## Poseidon ##
-##############
+#########################
+## Poseidon Encryption ##
+#########################
 
 N_ROUNDS_F = 8
 N_ROUNDS_P = Array.create_from((cint(56), cint(57), cint(56), cint(60), cint(60), cint(63), cint(64), cint(63), cint(60), cint(66), cint(60), cint(65), cint(70), cint(60), cint(64), cint(68)))
@@ -356,6 +356,7 @@ C_ = Array.create_from(cint([
 # Poseidon Permutation Function #
 #################################
 
+# this function is used in the decryption
 def poseidonPerm(inputs):
     #input_length = len(inputs)
     # State of the poseidon decrypt function has always 4 elements
@@ -390,7 +391,7 @@ def poseidonPerm(inputs):
 
 two128 = 340282366920938463463374607431768211456
 
-# inputs: encryption key = (e1,e2),
+# inputs: encryption key = (e1,e2), length = length of plaintext
 def poseidon_decrypt(ciphertext: Array, e1,e2, nonce: cint, lenght):
     state = Array(4, cint)
     state[0] = 0
@@ -413,6 +414,4 @@ def poseidon_decrypt(ciphertext: Array, e1,e2, nonce: cint, lenght):
         state[3] = ciphertext[i * 3 + 2]
 
     return message
-    
 
-    
